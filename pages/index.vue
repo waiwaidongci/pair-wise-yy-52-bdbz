@@ -4,7 +4,6 @@ import { useOperationsStore } from '~/stores/operations'
 const store = useOperationsStore()
 const { data } = await useFetch('/api/operations')
 const { reconnect } = useRealtime((event) => {
-  if (event.type === 'connection') store.connection = event.payload.startsWith('在线') ? '在线' : '重连中'
   if (event.type === 'permit-update') store.latestAlert = event.payload
 })
 const counts = computed(() => ({
