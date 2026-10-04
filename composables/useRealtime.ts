@@ -14,12 +14,16 @@ export function useRealtime(onEvent: (event: RealtimeEvent) => void) {
     }
     onEvent({ type: 'connection', payload: '在线 · 模拟通道' })
     timer = setInterval(() => {
-      const updates = ['WTG-03 隔离点状态已由周野确认', '风速 10.8m/s，高空作业保持暂停', 'LINE-A2 许可复核提醒已送达负责人']
+      const updates = ['通道心跳正常 · 隔离点与许可修订号已同步', '风速 10.8m/s，高空作业保持暂停']
       onEvent({ type: 'permit-update', payload: updates[Math.floor(Math.random() * updates.length)]! })
-    }, 9000)
+    }, 30000)
   }
   function disconnect() { if (timer) clearInterval(timer); socket?.close() }
+  function reconnect() {
+    disconnect()
+    connect()
+  }
   onMounted(connect)
   onBeforeUnmount(disconnect)
-  return { reconnect: connect, disconnect }
+  return { reconnect, disconnect }
 }
